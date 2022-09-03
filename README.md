@@ -24,7 +24,7 @@ npm install
 
 ### 2. Create and seed the database
 
-The master branch contains the initial state of the project. To see different index configurations as per the database used, checkout into respective branches (one of `sqlite`, `mysql`, `postgresql`, `mongodb`).
+The master branch contains the initial state of the project. To see different index configurations as per the database used, checkout into respective branches (one of `sqlite`, `mysql`, `mongodb`).
 
 Within a specific database branch, run the following command to migrate your database data.
 
@@ -38,7 +38,7 @@ pnpm dlx prisma migrate dev --name init
 
 Running the above script on the [`sqlite`](/xinnks/indexes-in-prisma/tree/sqlite) branch (SQLite database branch) will trigger the creation of the SQLite database file (`./prisma/dev.db`) too.
 
-The script creates the `User` and `Post` tables that are defined in [`prisma/schema.prisma`](./schema.prisma), also, for a newly created database, seeding is also triggered, i.e, the seed file in [`prisma/seed.js`](./prisma/seed.js) will be executed and your database will be populated with the sample data found in [`prisma/demo.json`](./prisma/demo.json).
+The script creates the `User` and `Post` tables that are defined in [`prisma/schema.prisma`](./schema.prisma), also, for a newly created database, seeding is also triggered, i.e, the seed file in [`prisma/seed.js`](./prisma/seed.js) will be executed and your database will be populated with the sample data found in [`prisma/data.json`](./prisma/demo.json).
 
 > IMPORTANT: Rename the `sample.env` file to `.env` and populate the environment variables found within with corresponding database urls to be used by Prisma.
 
@@ -49,7 +49,7 @@ The script creates the `User` and `Post` tables that are defined in [`prisma/sch
 npm run dev
 ```
 
-The server is now running on `http://localhost:3000`. You can send the API requests implemented in `index.js`, e.g. [`http://localhost:3000/feed`](http://localhost:3000/feed).
+The server is now running on `http://localhost:5000`. You can send the API requests implemented in `index.js`, e.g. [`http://localhost:5000/feed`](http://localhost:5000/feed).
 
 ## Using the REST API
 
