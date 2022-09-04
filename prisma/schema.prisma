@@ -1,11 +1,11 @@
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"]
+  previewFeatures = ["fullTextIndex", "referentialIntegrity"]
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL_SQLITE")
+  provider = "mysql"
+  url = env("DATABASE_URL_MYSQL")
   referentialIntegrity = "prisma"
 }
 
@@ -20,12 +20,14 @@ model Post {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  title     String
-  content   String?
+  title     String   @db.VarChar(255)
+  content   String?  @db.Text
   published Boolean  @default(false)
   viewCount Int      @default(0)
   author    User?    @relation(fields: [authorId], references: [id])
   authorId  Int?
 
-  @@index([title, content])
+  @@fulltext([content])
+  @@index([title, authorId])
 }
+  
