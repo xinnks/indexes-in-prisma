@@ -1,33 +1,38 @@
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["fullTextIndex", "referentialIntegrity"]
+  previewFeatures = ["fullTextIndex"]
 }
 
 datasource db {
-  provider = "mysql"
-  url = env("DATABASE_URL_MYSQL")
-  referentialIntegrity = "prisma"
+  provider = "mongodb"
+  url      = env("DATABASE_URL_MONGODB")
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
+  id    String  @id @default(auto()) @map("_id") @db.ObjectId
   email String  @unique
   name  String?
   posts Post[]
 }
 
+type Banner {
+  height  Int?
+  width   Int?
+  url     String?
+}
+
 model Post {
-  id        Int      @id @default(autoincrement())
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
-  content   String?  @db.Text
+  title     String
+  content   String?
+  banner    Banner?
   published Boolean  @default(false)
   viewCount Int      @default(0)
   author    User?    @relation(fields: [authorId], references: [id])
-  authorId  Int?
+  authorId  String?   @db.ObjectId
 
-  @@fulltext([content])
-  @@index([title, authorId])
+  @@fulltext([title(sort: "Asc"), content])
+  @@index([title, banner.url], map: "title_banner_url_idx")
 }
-  
