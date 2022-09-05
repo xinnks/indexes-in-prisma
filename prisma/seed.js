@@ -1,24 +1,38 @@
 const { PrismaClient } = require('@prisma/client')
 
-const data = require("./data.json")
+const userData = require("./data.json")
+const banners = require("./banners.json")
 
 const prisma = new PrismaClient()
 
 async function main() {
-  await prisma.$connect()
+  await prisma.$connect();
   console.log(`Start seeding ...`);
-  const userData = data.map(item => {
-    const postData = item.posts;
-    delete item.posts;
-    return Object.assign(item, {posts: {create: postData}})
-  })
-  for (const u of userData) {
-    const user = await prisma.user.create({
-      data: u,
-    })
-    console.log(`Created user with id: ${user.id}`)
+  try {
+    let index = 0
+    for (const u of userData) {
+      const uPosts = u.posts.map(x => {
+        index++
+        return Object.assign(x, {
+          banner: banners[index]
+        })
+      })
+      delete u.posts;
+      const user = await prisma.user.create({
+        data: u,
+      })
+      
+      await prisma.post.createMany({
+        data: uPosts.map(p => Object.assign(p, {
+          authorId: user.id
+        })),
+      })
+      console.log(`Created user with id: ${user.id}; added ${uPosts.length} posts`)
+    }
+    console.log(`Seeding finished.`)
+  } catch(err) {
+    console.log({err})
   }
-  console.log(`Seeding finished.`)
 }
 
 main()
