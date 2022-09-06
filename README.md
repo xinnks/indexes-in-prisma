@@ -36,7 +36,7 @@ npx prisma migrate dev --name init
 pnpm dlx prisma migrate dev --name init
 ```
 
-Running the above script on the [`sqlite`](/xinnks/indexes-in-prisma/tree/sqlite) branch (SQLite database branch) will trigger the creation of the SQLite database file (`./prisma/dev.db`) too.
+Running the above script on the [`sqlite`](https://github.com/xinnks/indexes-in-prisma/tree/sqlite) branch (SQLite database branch) will trigger the creation of the SQLite database file (`./prisma/dev.db`) too.
 
 The script creates the `User` and `Post` tables that are defined in [`prisma/schema.prisma`](./schema.prisma), also, for a newly created database, seeding is also triggered, i.e, the seed file in [`prisma/seed.js`](./prisma/seed.js) will be executed and your database will be populated with the sample data found in [`prisma/data.json`](./prisma/demo.json).
 
